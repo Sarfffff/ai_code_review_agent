@@ -1,0 +1,26 @@
+name: AI Code Review
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run code review
+        run: python main.py . --output review_report.md --fail-on critical
+
+      - name: Upload review report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-code-review-report
+          path: review_report.md
